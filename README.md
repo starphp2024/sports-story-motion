@@ -8,8 +8,8 @@ Claude Skill สำหรับทำสารคดีแผนที่ภา�
 
 ## ดาวน์โหลดเวอร์ชัน 2.0.0
 
-- [ZIP สำหรับติดตั้งใน Claude](https://github.com/starphp2024/sports-story-motion/releases/download/v2.0.0/Sports-Story-Motion-Claude-v2.zip)
-- [วิดีโอตัวอย่าง 13.5 วินาที](https://github.com/starphp2024/sports-story-motion/releases/download/v2.0.0/Sports-Story-Motion-2D-3D-Preview.mp4)
+- [ZIP สำหรับติดตั้งใน Claude](https://github.com/starphp2024/sports-story-motion/raw/v2.0.0/downloads/Sports-Story-Motion-Claude-v2.zip)
+- [วิดีโอตัวอย่าง 13.5 วินาที](https://github.com/starphp2024/sports-story-motion/raw/v2.0.0/downloads/Sports-Story-Motion-2D-3D-Preview.mp4)
 
 ## ติดตั้งใน Claude
 
