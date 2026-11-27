@@ -7,6 +7,6 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Sports Story Motion",
-    "shortDescription": "สารคดีแผนที่ไทย พร้อม terrain และซับ Kanit"
+    "shortDescription": "สารคดีแผนที่ภาษาไทย"
   }
 }
