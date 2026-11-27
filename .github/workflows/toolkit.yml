@@ -43,6 +43,7 @@ jobs:
       - run: node skills/sports-story-motion/renderer/selftest.mjs
       - run: python skills/sports-story-motion/scripts/prepare_geo.py skills/sports-story-motion/assets/panama/project.json
       - run: python skills/sports-story-motion/scripts/ssm.py validate skills/sports-story-motion/assets/panama/project.json --animation-only
+      - run: python scripts/build_demo_project.py
       - run: node skills/sports-story-motion/renderer/render.mjs skills/sports-story-motion/assets/panama/project.json build/panama-animation-only.mp4 --animation-only
       - uses: actions/upload-artifact@v4
         if: always()
