@@ -1,0 +1,15 @@
+{
+  "name": "sports-story-motion",
+  "interface": {
+    "displayName": "Sports Story Motion"
+  },
+  "plugins": [
+    {
+      "name": "sports-story-motion",
+      "source": {
+        "source": "local",
+        "path": "./"
+      }
+    }
+  ]
+}

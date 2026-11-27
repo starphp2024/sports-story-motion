@@ -1,0 +1,12 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "sports-story-motion",
+  "displayName": "Sports Story Motion v2",
+  "version": "2.0.0",
+  "description": "สร้างวิดีโอสารคดีแผนที่ภาษาไทยสำหรับ Shorts, Reels และ TikTok พร้อมไฮไลต์พื้นที่ เส้นทาง ซับ Kanit และไฟล์ MP4/SRT",
+  "suggestedPrompts": [
+    "วางสตอรีบอร์ดสารคดีแผนที่กีฬาแนวตั้ง 60 วินาที พร้อมคิวภาพและบทพากย์ไทย"
+  ],
+  "homepage": "https://github.com/hirok-th/sports-story-motion",
+  "repository": "https://github.com/hirok-th/sports-story-motion"
+}
