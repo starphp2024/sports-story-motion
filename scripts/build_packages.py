@@ -6,7 +6,7 @@ from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 ROOT=Path(__file__).resolve().parents[1]
 SKILL=ROOT/"skills/sports-story-motion"
-SKIP={"node_modules",".cache","__pycache__","geo","media"}
+SKIP={"node_modules",".cache","__pycache__","geo","media",".venv","venv","output","build","dist",".git"}
 def files(folder):
     return sorted(p for p in folder.rglob("*") if p.is_file() and not (set(p.relative_to(folder).parts)&SKIP) and p.name!="geo.json" and not p.name.endswith((".pyc",".candidate.json")))
 def build(out):

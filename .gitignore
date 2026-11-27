@@ -8,3 +8,5 @@ dist/
 **/geo.json
 **/media/
 **/*.candidate.json
+tooling/
+film/

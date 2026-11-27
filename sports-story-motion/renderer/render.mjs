@@ -9,10 +9,13 @@ import {fileURLToPath} from 'node:url';
 
 const argv=process.argv.slice(2),pos=argv.filter(x=>!x.startsWith('--'));
 if(pos.length!==2){console.error('node render.mjs project.json output.mp4 [--preview] [--animation-only]');process.exit(1);}
+const frameArg=argv.find(x=>x.startsWith('--frame='));
+const frameTime=frameArg===undefined?null:Number(frameArg.slice(8));
+if(frameTime!==null&&(!Number.isFinite(frameTime)||frameTime<0))throw Error('invalid --frame seconds');
 const input=path.resolve(pos[0]),output=path.resolve(pos[1]),root=path.dirname(input);
 const skill=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const p=JSON.parse(await readFile(input,'utf8')),animationOnly=argv.includes('--animation-only');
-if(!output.endsWith('.mp4'))throw Error('output must end in .mp4');
+if(!output.endsWith(frameTime===null?'.mp4':'.png'))throw Error('use .mp4 output, or .png with --frame=SECONDS');
 const python=process.env.SSM_PYTHON|| (process.platform==='win32'?'python':'python3');
 const validation=spawnSync(python,[path.join(skill,'scripts','ssm.py'),'validate',input,...(animationOnly?['--animation-only']:[])],{encoding:'utf8'});
 if(validation.status!==0)throw Error(validation.stderr||validation.stdout||'project validation failed');
@@ -41,7 +44,13 @@ try{
   const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1});
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/skill/renderer/index.html');
-  await page.waitForFunction(()=>window.ready===true,{},{timeout:60000});
+  try { await Promise.race([page.waitForFunction(()=>window.ready===true,{},{timeout:60000}),new Promise((resolve,reject)=>page.once('pageerror',reject))]); }
+  catch(error){await page.screenshot({path:output.replace('.mp4','-startup-error.png')});throw Error('Renderer startup failed: '+(errors.join('; ')||error.message));}
+  if(frameTime!==null){
+    if(frameTime>=p.duration)throw Error('frame time outside project');
+    const report=await page.evaluate(t=>window.setTime(t),frameTime);
+    await page.screenshot({path:output,type:'png'});await writeFile(output+'.json',JSON.stringify(report,null,2));console.log(output);
+  }else{
   const command=['-hide_banner','-loglevel','error','-y','-f','image2pipe','-vcodec','png','-framerate',String(p.fps),'-i','pipe:0'];
   if(!animationOnly)command.push('-i',path.resolve(root,p.audio.file),'-map','0:v:0','-map','1:a:0','-c:a','aac','-b:a','192k');
   command.push('-t',String(p.duration),'-c:v','libx264','-preset','veryfast','-crf','19','-pix_fmt','yuv420p','-movflags','+faststart',temporary);
@@ -84,6 +93,7 @@ try{
     stream_info:info,reports
   },null,2));
   console.log(output);
+  }
 }finally{
   if(encoder&&encoder.exitCode===null)encoder.kill();
   if(browser)await browser.close();

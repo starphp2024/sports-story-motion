@@ -15,7 +15,8 @@ Keep project.json, geo.json, geo/ and media/ together. Paths inside the project 
 | camera | Increasing absolute seconds at, center [lon,lat], span_km, tilt in degrees, bearing; smooth easing; no word-count retiming |
 | routes | id, kind actual/illustrative, WGS84 points, reveal start/end, color; actual requires verified:true and source URL |
 | objects | icon or supplied asset, route id, start/end, screen width; follows path and turns in projected screen direction |
-| labels | text, location [lon,lat], start/end |
+| markers | Stationary icon/asset, WGS84 location, start/end, width and optional angle; e.g. city, building, dam, port, reservoir, rail, pin |
+| labels | text, location [lon,lat], start/end; optional screen_offset [x,y] in design pixels to avoid a vehicle while retaining a geographic anchor |
 | mechanism | Optional Panama lock schematic start/end; not terrain or a scale model |
 | captions | Nonoverlapping start/end/text in absolute seconds from actual audio; max two short lines |
 | audio | Imported Google AI Studio file, measured duration, SHA-256, actual observed model/voice and real review flags |
@@ -27,7 +28,7 @@ Keep project.json, geo.json, geo/ and media/ together. Paths inside the project 
 
 prepare_geo.py creates matching texture/height arrays and source records. Terrain vertices and geographic anchors share Mercator coordinates; height uses metres with latitude scale correction and explicit exaggeration. Moving objects use ground-path distance, then terrain height and the current camera projection. Label/icon size remains screen-relative.
 
-The default terrain grid is 129×129. Blue Marble imagery lacks lock-scale detail. Add higher-resolution licensed imagery with correct Mercator bounds as a separate input layer rather than upscaling and claiming more detail. Antimeridian is not supported in a single bounds rectangle.
+The default terrain grid is 129×129; the Panama demo uses 257×257 and wide bounds to keep mesh edges outside the close shot. Blue Marble imagery lacks lock-scale detail. Add higher-resolution licensed imagery with correct Mercator bounds as a separate input layer rather than upscaling and claiming more detail. Antimeridian is not supported in a single bounds rectangle.
 
 The current infographic renderer has one continuous geographic shot and an optional lock schematic. For other specialized mechanisms, extend the player or compose a verified sequence through the legacy renderer. It does not automatically invent a new mechanism from a topic string.
 

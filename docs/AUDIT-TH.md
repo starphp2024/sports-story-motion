@@ -24,7 +24,10 @@ branch: feat/thai-documentary-toolkit-v3
 ## ข้อจำกัดที่พบจริง
 
 - Facebook reel และ YouTube Shorts เปิดดูวิดีโอไม่ได้ ไม่อ้างว่าได้ดูหรือเทียบสไตล์สำเร็จ
-- PowerShell, Node REPL และ browser ของ session ไม่ตอบสนอง การอ่าน local SKILL.md ของ skill ผู้ช่วยก็ไม่สำเร็จ ใช้ GitHub connector พัฒนาและ CI ตรวจแทน ไม่อ้างว่าทดสอบบนเครื่องผู้ใช้แล้ว
+- ช่วงแรก local tools ตอบช้า ต่อมาอ่าน skill ผู้ช่วยและรัน Python/FFmpeg ได้; native Chrome เปิด AI Studio ได้ แต่ browser host ไม่มี และมีผู้ใช้งาน Chrome พร้อมกัน จึงพักการควบคุมเพื่อรอการประสาน
+- local checkout อยู่ใน Windows Temp เพราะสร้างโฟลเดอร์ที่ home root ไม่ได้; Git clone สำเร็จด้วย OpenSSL backend โดยยังตรวจใบรับรองตามปกติ
+- local Python ที่ทดสอบไม่มี RAQM จึงไม่รับรองซับไทยของ renderer เดิมบนเครื่องนี้; v3 ใช้ Chromium shaping
+- CI รอบแรก unit/regression และแพ็ก ZIP ผ่าน Windows/Linux; renderer install ล้มเพราะ ubuntu-latest เปลี่ยนเป็น 26.04 ที่ Playwright 1.58.2 ไม่รองรับ จึง pin งาน render เป็น Ubuntu 24.04
 - ยังไม่มีเสียงจากบัญชี Google AI Studio ที่เข้าถึงได้ ไม่เดาชื่อเสียงหรือเปลี่ยนบริการ
 - animation-only ไม่มีเสียงพากย์ จึงยังไม่สมบูรณ์ ไม่ใช่ demo final และ SRT ว่างไม่ใช่ซับส่งมอบ
 - ต้องมีภาพนิ่ง/คลิปช่วงเปิด ช่วงซูม และไอคอนเพื่อเทียบรายละเอียดต้นฉบับ

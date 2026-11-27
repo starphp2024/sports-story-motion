@@ -37,14 +37,15 @@
     {
       "id": "canal",
       "bounds": [
-        -80.35,
-        8.45,
-        -79.05,
-        9.85
+        -81.3,
+        7.5,
+        -78.3,
+        10.7
       ],
       "zoom": 8,
       "dem_zoom": 9,
-      "terrain": true
+      "terrain": true,
+      "grid_size": 257
     }
   ],
   "countries": [
@@ -139,7 +140,11 @@
         9.2
       ],
       "start": 11,
-      "end": 26
+      "end": 26,
+      "screen_offset": [
+        180,
+        100
+      ]
     }
   ],
   "routes": [
@@ -208,11 +213,25 @@
     {
       "claim": "Place positions cross-check: Panama Canal / Gatun Lake region",
       "url": "https://pancanal.com/en/"
+    },
+    {
+      "claim": "Panama flag arrangement and upward five-point stars verified",
+      "url": "https://www.mingob.gob.pa/simbolosdelanacion/bandera-nacional/",
+      "checked": "2026-11-27"
     }
   ],
   "render_status": "animation-only",
   "reference_review": {
     "facebook": "not accessible; no similarity claim",
     "youtube": "not accessible; no similarity claim"
-  }
+  },
+  "water_features": [
+    {
+      "ne_id": 1159123579,
+      "name": "ทะเลสาบกาตุน",
+      "color": "#0d84ad",
+      "surface_elevation_m": 26,
+      "note": "Nominal illustrative lake level; not a live water gauge"
+    }
+  ]
 }

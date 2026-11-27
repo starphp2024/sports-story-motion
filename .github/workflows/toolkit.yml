@@ -2,6 +2,7 @@ name: Toolkit validation and render
 on:
   push:
     branches: [feat/thai-documentary-toolkit-v3]
+    paths-ignore: ['downloads/v3/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -51,4 +52,23 @@ jobs:
             build/
             doctor.json
             skills/sports-story-motion/assets/panama/geo.json
+            skills/sports-story-motion/assets/panama/geo/
             skills/sports-story-motion/renderer/package-lock.json
+  manifests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python scripts/validate_manifests.py
+      - run: npm install --prefix /tmp/ssm-cli @anthropic-ai/claude-code@2.1.332 @openai/codex@0.172.0
+      - run: /tmp/ssm-cli/node_modules/.bin/claude plugin validate . --json
+      - run: /tmp/ssm-cli/node_modules/.bin/codex plugin marketplace add . --json
+      - run: /tmp/ssm-cli/node_modules/.bin/codex plugin add sports-story-motion@sports-story-motion --json
+      - run: /tmp/ssm-cli/node_modules/.bin/codex plugin list --json

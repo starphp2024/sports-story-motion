@@ -79,10 +79,17 @@ def validate(path, animation_only=False):
         if obj.get("route") not in ids:raise ValueError("moving object refers to a missing route")
         if obj.get("asset"):local(root,obj["asset"])
         elif not (SKILL/"assets/icons"/(obj["icon"]+".svg")).is_file():raise ValueError("missing icon")
+    for marker in p.get("markers",[]):
+        interval(marker)
+        if not point(marker["location"]):raise ValueError("invalid marker coordinate")
+        if marker.get("asset"):local(root,marker["asset"])
+        elif not (SKILL/"assets/icons"/(marker["icon"]+".svg")).is_file():raise ValueError("missing marker icon")
     for country in p.get("countries",[]):
         interval(country)
         if not point(country["location"]) or not country["start"]<=country["flag_at"]<country["zoom_at"]<country["end"]:
             raise ValueError("country order must be locate, highlight, flag hold, then zoom")
+        zoom_keys=[(a,b) for a,b in zip(camera,camera[1:]) if abs(a["at"]-country["zoom_at"])<1/p["fps"] and b["span_km"]<a["span_km"]]
+        if not zoom_keys:raise ValueError("country zoom_at must match the start of a real camera zoom interval")
         if country["zoom_at"]-country["flag_at"]<1:
             raise ValueError("hold the country flag at least one second before zoom")
         if country.get("flag"):local(root,country["flag"])

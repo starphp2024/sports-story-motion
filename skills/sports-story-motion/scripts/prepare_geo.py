@@ -15,6 +15,7 @@ LIMIT = 85.05112878
 NASA = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief/default/2004-07-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg"
 DEM = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
 BOUNDARIES = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson"
+LAKES = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_lakes.geojson"
 
 def mercator(lon, lat):
     if not -180 <= lon <= 180 or not -LIMIT <= lat <= LIMIT:
@@ -74,7 +75,9 @@ def prepare(project_path):
     maps = []
     for spec in p["maps"]:
         detail = spec.get("terrain", False)
-        size = (129,129)
+        grid_size=spec.get('grid_size',129)
+        if grid_size not in (65,129,257):raise ValueError('grid_size must be 65,129 or 257')
+        size = (grid_size,grid_size)
         image = mosaic(spec["bounds"], spec["zoom"], NASA, cache, records, (1536,1536))
         image.save(out / (spec["id"] + ".jpg"), quality=94)
         data = {"id":spec["id"],"bounds":spec["bounds"],"texture":"geo/"+spec["id"]+".jpg"}
@@ -88,14 +91,21 @@ def prepare(project_path):
         maps.append(data)
     country_data = json.loads(fetch(BOUNDARIES,cache,records))
     selected = []
-    for country in p["countries"]:
+    for country in p.get("countries",[]):
         matches = [x for x in country_data["features"] if
                    x["properties"].get("ADM0_A3")==country["code"]]
         if len(matches)!=1:
             raise ValueError("country boundary missing/ambiguous: "+country["code"])
         selected.append({"code":country["code"],"geometry":matches[0]["geometry"],
                          "source":BOUNDARIES,"scale":"Natural Earth 1:50m; not a legal boundary"})
-    document = {"maps":maps,"countries":selected,"generated_at":datetime.now(timezone.utc).isoformat(),
+    waters=[]
+    if p.get("water_features"):
+        lakes=json.loads(fetch(LAKES,cache,records))
+        for spec in p["water_features"]:
+            matches=[x for x in lakes["features"] if x["properties"].get("ne_id")==spec["ne_id"]]
+            if len(matches)!=1:raise ValueError("water feature missing or ambiguous")
+            waters.append({**spec,"geometry":matches[0]["geometry"],"source":LAKES})
+    document = {"maps":maps,"countries":selected,"water_features":waters,"generated_at":datetime.now(timezone.utc).isoformat(),
                 "credits":["Imagery: NASA Blue Marble / NASA GIBS (2004 composite)",
                            "Terrain Tiles: Mapzen / AWS Open Data (SRTM and other sources)",
                            "Boundaries: Natural Earth, public domain (1:50m)"],

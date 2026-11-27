@@ -1,6 +1,7 @@
 import * as THREE from '/skill/renderer/node_modules/three/build/three.module.js';
 
 const p = await (await fetch('/project/project.json')).json();
+for(const key of ['countries','labels','routes','objects','markers','captions'])p[key]??=[];
 const geo = await (await fetch('/project/geo.json')).json();
 const $ = id => document.getElementById(id);
 const base = p.aspect === '16:9' ? [1920,1080] : [1080,1920];
@@ -11,9 +12,10 @@ if(p.aspect==='16:9'){
   $('subtitle').style.top='76%';$('credits').style.bottom='55px';
   $('diagram').style.cssText+=';left:560px;right:560px;top:24%;height:440px';
 }
+$('route-layer').setAttribute('viewBox','0 0 '+base[0]+' '+base[1]);
 const canvas=$('map');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
-renderer.setSize(base[0],base[1],false);renderer.setPixelRatio(1);
+renderer.setSize(window.innerWidth,window.innerHeight,false);renderer.setPixelRatio(1);
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.setClearColor(p.colors.ocean);
 const scene=new THREE.Scene();
@@ -36,6 +38,8 @@ function elevation(lon,lat){
   return Math.max(0,z)*detailed.vertical_exaggeration/1000/Math.cos(p.origin[1]*Math.PI/180);
 }
 function world(point,lift=.15){return new THREE.Vector3(...xy(...point),elevation(...point)+lift);}
+if(!detailed)throw Error('DEM mesh missing: prepare real terrain before rendering');
+for(const layer of geo.maps){const spec=p.maps.find(x=>x.id===layer.id);if(!spec||JSON.stringify(spec.bounds)!==JSON.stringify(layer.bounds))throw Error('geo.json bounds are stale; run prepare_geo.py');if(layer.elevation_m&&layer.vertical_exaggeration!==p.terrain.vertical_exaggeration)throw Error('terrain exaggeration changed; prepare data again');}
 const textures=new THREE.TextureLoader();
 for(const map of geo.maps){
   const [w,s,e,n]=map.bounds,[xl,yb]=xy(w,s),[xr,yt]=xy(e,n);
@@ -53,6 +57,17 @@ for(const map of geo.maps){
   const texture=await textures.loadAsync('/project/'+map.texture);texture.colorSpace=THREE.SRGBColorSpace;
   const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({map:texture,roughness:1,metalness:0,color:0xb9d5d5,side:THREE.DoubleSide}));
   scene.add(mesh);
+}
+for(const water of geo.water_features||[]){
+  const polygons=water.geometry.type==='Polygon'?[water.geometry.coordinates]:water.geometry.coordinates;
+  for(const polygon of polygons){
+    const shape=new THREE.Shape(polygon[0].map(q=>new THREE.Vector2(...xy(...q))));
+    for(const ring of polygon.slice(1))shape.holes.push(new THREE.Path(ring.map(q=>new THREE.Vector2(...xy(...q)))));
+    const geometry=new THREE.ShapeGeometry(shape),pos=geometry.getAttribute('position');
+    const z=water.surface_elevation_m*p.terrain.vertical_exaggeration/1000/Math.cos(p.origin[1]*Math.PI/180)+.025;
+    for(let i=0;i<pos.count;i++)pos.setZ(i,z);
+    const mesh=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color:water.color,side:THREE.DoubleSide}));scene.add(mesh);
+  }
 }
 const countryGroups=[];
 for(const country of p.countries){
@@ -83,12 +98,12 @@ const labels=p.labels.map(item=>{
   const el=document.createElement('div');el.className='anchor';el.textContent=item.text;$('labels').append(el);return{item,el};
 });
 const routes=p.routes.map(item=>{
-  const geometry=new THREE.BufferGeometry().setFromPoints(item.points.map(q=>world(q,.25)));
-  const line=new THREE.Line(geometry,new THREE.LineBasicMaterial({color:item.color||p.colors.route,depthTest:false}));
-  line.renderOrder=10;scene.add(line);
+  const line=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  line.setAttribute('stroke',item.color||p.colors.route);line.setAttribute('stroke-width','7');line.setAttribute('stroke-linecap','round');line.setAttribute('stroke-linejoin','round');line.setAttribute('fill','none');if(item.dash)line.setAttribute('stroke-dasharray',item.dash.join(' '));$('route-layer').append(line);
   const head=document.createElement('img');head.className='object';head.src='/skill/assets/icons/arrow.svg';head.style.width='48px';$('labels').append(head);
   return {item,line,head};
 });
+const markers=(p.markers||[]).map(item=>{const el=document.createElement('img');el.className='object';el.src=item.asset?'/project/'+item.asset:'/skill/assets/icons/'+item.icon+'.svg';el.style.width=(item.width||90)+'px';$('labels').append(el);return{item,el};});
 const objects=p.objects.map(item=>{
   const el=document.createElement('img');el.className='object';el.src=item.asset?'/project/'+item.asset:'/skill/assets/icons/'+item.icon+'.svg';
   el.style.width=(item.width||100)+'px';$('labels').append(el);return{item,el};
@@ -132,23 +147,24 @@ $('headline').textContent=p.title_screen;$('eyebrow').textContent=p.eyebrow||'';
 $('credits').textContent=geo.credits.join('\n')+'\n'+p.route_note;
 $('status').textContent=p.render_status==='final'?'':'ทดสอบภาพเคลื่อนไหว • ยังไม่มีเสียงพากย์';
 await document.fonts.ready;
-await Promise.all([...document.images].map(i=>i.decode().catch(()=>{throw Error('image failed: '+i.src);})));
+await Promise.all([...document.images].filter(i=>i.getAttribute('src')).map(i=>i.decode().catch(()=>{throw Error('image failed: '+i.src);})));
 window.setTime=async seconds=>{
   const t=seconds;cameraAt(t);
   for(const {country,group,label,flag} of countryGroups){
     group.visible=t>=country.start&&t<country.end;
     label.style.display=group.visible?'block':'none';flag.style.display=t>=country.flag_at?'block':'none';place(label,country.location);
   }
-  for(const {item,el} of labels){el.style.display=t>=item.start&&t<item.end?'block':'none';place(el,item.location);}
+  for(const {item,el} of labels){el.style.display=t>=item.start&&t<item.end?'block':'none';place(el,item.location);if(item.screen_offset){el.style.left=(parseFloat(el.style.left)+item.screen_offset[0])+'px';el.style.top=(parseFloat(el.style.top)+item.screen_offset[1])+'px';}}
   for(const {item,line,head} of routes){
     const progress=clamp((t-item.start)/(item.end-item.start));
-    line.visible=t>=item.start;const count=Math.max(2,Math.ceil(progress*item.points.length));
+    line.style.display=t>=item.start?'block':'none';
     const partial=[item.points[0]];
     // Resample to 160 points for smooth, continuous route reveal.
     for(let i=1;i<=160;i++)partial.push(track(item.points,progress*i/160));
-    line.geometry.dispose();line.geometry=new THREE.BufferGeometry().setFromPoints(partial.map(q=>world(q,.25)));
+    line.setAttribute('points',partial.map(q=>screen(q).slice(0,2).join(',')).join(' '));
     head.style.display=t>=item.start?'block':'none';place(head,track(item.points,progress),direction(item.points,progress));
   }
+  for(const {item,el} of markers){el.style.display=t>=item.start&&t<item.end?'block':'none';place(el,item.location,item.angle||0);}
   for(const {item,el} of objects){
     const route=p.routes.find(r=>r.id===item.route),progress=clamp((t-item.start)/(item.end-item.start));
     el.style.display=t>=item.start&&t<=item.end?'block':'none';place(el,track(route.points,progress),direction(route.points,progress));
@@ -171,9 +187,10 @@ window.setTime=async seconds=>{
   if(wm)$('watermark').style.display=seconds>=wm.start&&seconds<wm.end?'block':'none';
   renderer.render(scene,camera);
   const subtitle=$('subtitle').getBoundingClientRect();
+  const textRects=[...$('subtitle').firstElementChild.getClientRects()];
   window.frameReport={time:seconds,terrainMode:detailed?'dem-mesh':'flat',
     renderer:renderer.getContext().getParameter(renderer.getContext().RENDERER),
-    subtitleFits:!cue||(subtitle.left>=0&&subtitle.right<=window.innerWidth&&subtitle.bottom<=window.innerHeight),
+    subtitleFits:!cue||(subtitle.left>=0&&subtitle.right<=window.innerWidth&&subtitle.bottom<=window.innerHeight&&textRects.every(r=>r.left>=0&&r.right<=window.innerWidth&&r.bottom<=window.innerHeight)),
     anchors:countryGroups.map(({country,label})=>({code:country.code,x:parseFloat(label.style.left),y:parseFloat(label.style.top)}))};
   return window.frameReport;
 };
