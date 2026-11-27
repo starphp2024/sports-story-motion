@@ -7,7 +7,8 @@ Skill และ Plugin สร้างสารคดีแผนที่/Infog
 
 - [คู่มือติดตั้งภาษาไทยสำหรับ Windows](docs/INSTALL-TH.md)
 - [เริ่มสร้างงาน/คำสั่งคัดลอก/แก้ปัญหา](docs/USAGE-TH.md)
-- [ผลตรวจและข้อจำกัดที่พบ](docs/AUDIT-TH.md)
+- [ผลตรวจส่งมอบและหลักฐาน CI](docs/VERIFICATION-TH.md)
+- [ผลตรวจโปรเจกต์ตั้งต้น](docs/AUDIT-TH.md)
 - [SKILL.md](skills/sports-story-motion/SKILL.md)
 - [โครงเรื่องคลองปานามา](skills/sports-story-motion/assets/panama/storyboard-th.md)
 - [รูปแบบโปรเจกต์ v3](skills/sports-story-motion/references/project-v3.md)
@@ -30,7 +31,7 @@ Python 3.10+, Pillow/RAQM สำหรับ renderer เดิม, Node.js 22+,
 AI Studio ต้องใช้บัญชีและ browser tool ที่เข้าถึงได้จริง; ไม่รวมเสียง/โควตา/สิทธิ์บัญชีใน plugin
 
 อ่านคู่มือก่อนติดตั้ง การมี manifest/ZIP ที่ถูกโครงสร้างไม่เท่ากับทดสอบติดตั้งทุกแอปแล้ว
-GitHub Actions ตรวจ unit/regression บน Windows/Linux และทดสอบ renderer บน Linux Codex CLI ติดตั้งและเปิดใช้ plugin บน CI สำเร็จแล้ว; Claude Code ผ่านการตรวจโครงสร้าง; Antigravity ผ่าน schema ส่วน GUI ของแอปทั้งสามและเสียงยังต้องตรวจตามรายงาน
+GitHub Actions ตรวจ unit/regression บน Windows/Linux และทดสอบ renderer บน Linux Codex CLI ติดตั้งและเปิดใช้ plugin บน CI สำเร็จแล้ว; Claude Code ติดตั้งและเปิดใช้ plugin บน CI สำเร็จแล้ว; Antigravity ผ่าน schema ส่วน GUI ของแอปทั้งสามและเสียงยังต้องตรวจตามรายงาน
 
 ## สร้าง ZIP
 
