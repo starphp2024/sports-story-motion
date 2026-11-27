@@ -1,0 +1,41 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><title>จัดคิวซับจากเสียงจริง • Sports Story Motion</title>
+<style>@font-face{font-family:Kanit;src:url('../assets/fonts/Kanit-Bold.ttf')}body{font:18px Kanit,sans-serif;max-width:1100px;margin:40px auto;padding:20px;background:#071e31;color:#e4eff7}button,input,textarea{font:inherit;padding:10px;border-radius:8px}button{background:#ffca56;border:0;cursor:pointer;margin:5px}textarea{width:90%;height:75px}audio,canvas{width:100%;margin:20px 0}section{border:1px solid #3c6179;padding:16px;margin:16px 0;border-radius:16px}label{display:inline-block;margin:10px}input[type=number]{width:130px}</style>
+<h1>จัดคิวซับจากเสียงจริง</h1><p>เปิดไฟล์ HTML นี้บน Chrome/Edge แล้วเลือกเสียงที่ส่งออกจาก Google AI Studio ฟังจริง ใช้ปุ่มตั้งต้น/จบ ณ เวลาที่ได้ยิน ไม่แจกเวลาตามจำนวนคำ ไฟล์อยู่บนเครื่อง ไม่มีการส่งเสียงขึ้นบริการอื่น</p>
+<label>ไฟล์เสียง <input id="file" type="file" accept="audio/*"></label><audio id="audio" controls></audio><canvas id="wave" width="1100" height="130"></canvas>
+<div>เวลาที่กำลังฟัง: <output id="clock">0.000</output> วินาที</div>
+<button id="add">เพิ่มซับ ณ เวลาปัจจุบัน</button><button id="export">ดาวน์โหลด UTF-8 SRT</button>
+<p id="message">ยังไม่ได้โหลดเสียง</p><main id="cues"></main>
+<script>
+const audio=document.getElementById('audio'),rows=[],container=document.getElementById('cues');
+audio.ontimeupdate=()=>document.getElementById('clock').textContent=audio.currentTime.toFixed(3);
+document.getElementById('file').onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ audio.src=URL.createObjectURL(file);
+ const context=new AudioContext(),buffer=await context.decodeAudioData(await file.arrayBuffer()),samples=buffer.getChannelData(0),canvas=document.getElementById('wave'),ctx=canvas.getContext('2d');
+ ctx.fillStyle='#12384e';ctx.fillRect(0,0,1100,130);ctx.strokeStyle='#5be6f7';ctx.beginPath();
+ for(let x=0;x<1100;x++){let peak=0;const start=Math.floor(x*samples.length/1100),end=Math.floor((x+1)*samples.length/1100);for(let i=start;i<end;i++)peak=Math.max(peak,Math.abs(samples[i]));ctx.moveTo(x,65-peak*60);ctx.lineTo(x,65+peak*60);}ctx.stroke();
+ canvas.onclick=e=>{audio.currentTime=(e.offsetX/canvas.clientWidth)*buffer.duration;};
+ document.getElementById('message').textContent='ความยาวจริง '+buffer.duration.toFixed(3)+' วินาที • คลิก waveform เพื่อฟังจุดนั้น';
+ context.close();
+};
+document.getElementById('add').onclick=()=>{
+ const row={start:audio.currentTime,end:Math.min(audio.duration||audio.currentTime+1,audio.currentTime+1),text:''};rows.push(row);
+ const section=document.createElement('section');
+ const start=document.createElement('input'),end=document.createElement('input'),text=document.createElement('textarea');
+ start.type=end.type='number';start.step=end.step='.001';start.value=row.start.toFixed(3);end.value=row.end.toFixed(3);text.placeholder='ประโยคสั้น ไม่เกิน 2 บรรทัด';
+ const a=document.createElement('button'),b=document.createElement('button'),play=document.createElement('button');a.textContent='ตั้งต้นจากเสียงตอนนี้';b.textContent='ตั้งจบจากเสียงตอนนี้';play.textContent='ฟังจากต้นซับ';
+ a.onclick=()=>{start.value=audio.currentTime.toFixed(3);row.start=+start.value;};
+ b.onclick=()=>{end.value=audio.currentTime.toFixed(3);row.end=+end.value;};
+ play.onclick=()=>{audio.currentTime=+start.value;audio.play();};
+ start.onchange=()=>row.start=+start.value;end.onchange=()=>row.end=+end.value;text.oninput=()=>row.text=text.value;
+ section.append(start,a,end,b,play,document.createElement('br'),text);container.append(section);
+};
+function stamp(t){let n=Math.round(t*1000),h=Math.floor(n/3600000);n%=3600000;let m=Math.floor(n/60000);n%=60000;return [h,m,Math.floor(n/1000)].map(x=>String(x).padStart(2,'0')).join(':')+','+String(n%1000).padStart(3,'0');}
+document.getElementById('export').onclick=()=>{
+ let previous=0;
+ for(const row of rows){if(!row.text.trim()||row.start<previous||row.end<=row.start||row.end>audio.duration){alert('ตรวจข้อความ เวลาเรียง ไม่ซ้อน และไม่เกินเสียงจริง');return;}previous=row.end;}
+ if(!rows.length){alert('ยังไม่มีซับ');return;}
+ const text=rows.map((r,i)=>(i+1)+'\n'+stamp(r.start)+' --> '+stamp(r.end)+'\n'+r.text.trim()).join('\n\n')+'\n';
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download='narration.srt';a.click();
+};
+</script></html>

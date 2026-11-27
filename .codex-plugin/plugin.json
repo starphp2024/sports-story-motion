@@ -1,15 +1,12 @@
 {
   "name": "sports-story-motion",
-  "version": "2.0.0",
-  "description": "สร้างวิดีโอสารคดีแผนที่ภาษาไทยสำหรับ Shorts, Reels และ TikTok พร้อมไฮไลต์พื้นที่ เส้นทาง ซับ Kanit และไฟล์ MP4/SRT",
+  "version": "3.0.0",
+  "description": "สร้างสารคดีแผนที่และ Infographic ภาษาไทย พร้อม DEM terrain เส้นทาง เสียง Google AI Studio และซับ Kanit",
+  "homepage": "https://github.com/hirok-th/sports-story-motion",
+  "repository": "https://github.com/hirok-th/sports-story-motion",
   "skills": "./skills/",
   "interface": {
-    "displayName": "Sports Story Motion v2",
-    "shortDescription": "ทำคลิปแผนที่กีฬาแนวตั้งพร้อมซับไทยและไฟล์ MP4/SRT",
-    "defaultPrompt": [
-      "วางสตอรีบอร์ดสารคดีแผนที่กีฬาแนวตั้ง 60 วินาที พร้อมคิวภาพและบทพากย์ไทย"
-    ]
-  },
-  "homepage": "https://github.com/hirok-th/sports-story-motion",
-  "repository": "https://github.com/hirok-th/sports-story-motion"
+    "displayName": "Sports Story Motion",
+    "shortDescription": "สารคดีแผนที่ไทย พร้อม terrain และซับ Kanit"
+  }
 }

@@ -1,0 +1,10 @@
+**/node_modules/
+**/.cache/
+**/__pycache__/
+**/*.pyc
+build/
+dist/
+**/geo/
+**/geo.json
+**/media/
+**/*.candidate.json

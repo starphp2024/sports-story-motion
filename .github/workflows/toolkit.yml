@@ -1,0 +1,54 @@
+name: Toolkit validation and render
+on:
+  push:
+    branches: [feat/thai-documentary-toolkit-v3]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r skills/sports-story-motion/requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/build_packages.py dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.os }}
+          path: dist/
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python -m pip install -r skills/sports-story-motion/requirements.txt
+      - run: python skills/sports-story-motion/scripts/ssm.py doctor > doctor.json
+      - run: npm install --prefix skills/sports-story-motion/renderer
+      - run: npx --prefix skills/sports-story-motion/renderer playwright install --with-deps chromium
+      - run: node skills/sports-story-motion/renderer/selftest.mjs
+      - run: python skills/sports-story-motion/scripts/prepare_geo.py skills/sports-story-motion/assets/panama/project.json
+      - run: python skills/sports-story-motion/scripts/ssm.py validate skills/sports-story-motion/assets/panama/project.json --animation-only
+      - run: node skills/sports-story-motion/renderer/render.mjs skills/sports-story-motion/assets/panama/project.json build/panama-animation-only.mp4 --animation-only --preview
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: panama-animation-only-and-diagnostics
+          path: |
+            build/
+            doctor.json
+            skills/sports-story-motion/assets/panama/geo.json
+            skills/sports-story-motion/renderer/package-lock.json

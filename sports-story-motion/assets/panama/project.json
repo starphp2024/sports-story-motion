@@ -1,0 +1,218 @@
+{
+  "schema_version": 3,
+  "topic": "คลองปานามา — ทำไมเรือยักษ์ต้องถูกยกขึ้น?",
+  "title_screen": "ทำไมเรือยักษ์\nต้องถูกยกขึ้น?",
+  "answer_screen": "ยกเรือด้วยน้ำ\nเพื่อข้ามทะเลสาบ",
+  "eyebrow": "คลองปานามา",
+  "question": "ทำไมเรือยักษ์ต้องถูกยกขึ้น และยกได้อย่างไร?",
+  "duration": 26,
+  "aspect": "9:16",
+  "fps": 30,
+  "origin": [
+    -79.8,
+    9.1
+  ],
+  "colors": {
+    "ocean": "#041b36",
+    "highlight": "#ff762d",
+    "route": "#ffca56"
+  },
+  "terrain": {
+    "mode": "dem-mesh",
+    "vertical_exaggeration": 4,
+    "source": "Mapzen Terrain Tiles / AWS / SRTM",
+    "note": "Height x4 for readability; not a scale engineering model"
+  },
+  "maps": [
+    {
+      "id": "overview",
+      "bounds": [
+        -104,
+        -10,
+        -55,
+        32
+      ],
+      "zoom": 3
+    },
+    {
+      "id": "canal",
+      "bounds": [
+        -80.35,
+        8.45,
+        -79.05,
+        9.85
+      ],
+      "zoom": 8,
+      "dem_zoom": 9,
+      "terrain": true
+    }
+  ],
+  "countries": [
+    {
+      "code": "PAN",
+      "name": "ปานามา",
+      "location": [
+        -80.1,
+        8.7
+      ],
+      "start": 2.5,
+      "flag_at": 3.8,
+      "zoom_at": 6,
+      "end": 10
+    }
+  ],
+  "camera": [
+    {
+      "at": 0,
+      "center": [
+        -82,
+        11
+      ],
+      "span_km": 2300,
+      "tilt": 0,
+      "bearing": 0
+    },
+    {
+      "at": 6,
+      "center": [
+        -82,
+        11
+      ],
+      "span_km": 2300,
+      "tilt": 0,
+      "bearing": 0
+    },
+    {
+      "at": 13,
+      "center": [
+        -79.8,
+        9.08
+      ],
+      "span_km": 105,
+      "tilt": 52,
+      "bearing": 8
+    },
+    {
+      "at": 20,
+      "center": [
+        -79.8,
+        9.08
+      ],
+      "span_km": 100,
+      "tilt": 48,
+      "bearing": 17
+    },
+    {
+      "at": 26,
+      "center": [
+        -79.8,
+        9.08
+      ],
+      "span_km": 150,
+      "tilt": 35,
+      "bearing": 12
+    }
+  ],
+  "labels": [
+    {
+      "text": "ทะเลแคริบเบียน",
+      "location": [
+        -79.95,
+        9.6
+      ],
+      "start": 9,
+      "end": 26
+    },
+    {
+      "text": "มหาสมุทรแปซิฟิก",
+      "location": [
+        -79.62,
+        8.78
+      ],
+      "start": 9,
+      "end": 26
+    },
+    {
+      "text": "ทะเลสาบกาตุน",
+      "location": [
+        -79.87,
+        9.2
+      ],
+      "start": 11,
+      "end": 26
+    }
+  ],
+  "routes": [
+    {
+      "id": "canal-explanation",
+      "kind": "illustrative",
+      "points": [
+        [
+          -79.94,
+          9.45
+        ],
+        [
+          -79.92,
+          9.27
+        ],
+        [
+          -79.85,
+          9.18
+        ],
+        [
+          -79.73,
+          9.13
+        ],
+        [
+          -79.68,
+          9.04
+        ],
+        [
+          -79.57,
+          8.94
+        ]
+      ],
+      "start": 9,
+      "end": 14,
+      "color": "#ffca56",
+      "source": "Editorial connector between named canal regions; not navigational data"
+    }
+  ],
+  "objects": [
+    {
+      "icon": "ship",
+      "route": "canal-explanation",
+      "start": 9,
+      "end": 26,
+      "width": 120
+    }
+  ],
+  "mechanism": {
+    "type": "panama-lock",
+    "start": 15,
+    "end": 23
+  },
+  "captions": [],
+  "audio": null,
+  "watermark": null,
+  "route_note": "เส้นทางประกอบคำอธิบาย • ไม่ใช่ร่องเดินเรือ",
+  "sources": [
+    {
+      "claim": "Locks lift ships to Gatun Lake around 26 m above sea level; water flows by gravity",
+      "url": "https://pancanal.com/en/history-of-the-panama-canal/"
+    },
+    {
+      "claim": "Lock design and gravity operation",
+      "url": "https://pancanal.com/en/design-of-the-locks/"
+    },
+    {
+      "claim": "Place positions cross-check: Panama Canal / Gatun Lake region",
+      "url": "https://pancanal.com/en/"
+    }
+  ],
+  "render_status": "animation-only",
+  "reference_review": {
+    "facebook": "not accessible; no similarity claim",
+    "youtube": "not accessible; no similarity claim"
+  }
+}

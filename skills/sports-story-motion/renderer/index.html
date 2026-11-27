@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="th"><meta charset="utf-8"><title>Sports Story Motion renderer</title>
+<style>
+@font-face{font-family:Kanit;src:url('/skill/assets/fonts/Kanit-Bold.ttf');font-weight:700}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#041b36;color:#fff;font-family:Kanit,sans-serif}
+#stage{position:absolute;inset:0;transform-origin:top left;width:1080px;height:1920px;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+#shade{position:absolute;inset:0;background:linear-gradient(#02101faa,transparent 30%,transparent 62%,#02101fdd)}
+#title{position:absolute;left:70px;right:150px;top:150px;font-size:82px;line-height:1.25;text-shadow:0 4px 10px #000}
+#eyebrow{font-size:29px;letter-spacing:5px;color:#5be6f7;margin-bottom:16px}
+#rule{width:100px;height:9px;background:#ffb839;margin-top:26px}
+#subtitle{position:absolute;left:70px;right:150px;top:73%;font-size:56px;line-height:1.4;text-align:center;white-space:pre-line;text-shadow:0 3px 2px #000,3px 0 2px #000,-3px 0 2px #000}
+#subtitle span{background:#041323d9;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:3px 14px;border-radius:8px}
+#credits{position:absolute;bottom:220px;left:45px;right:130px;font:18px/1.4 Kanit;color:#d5e1ef;white-space:pre-line;text-shadow:0 2px 3px #000}
+#status{position:absolute;top:70px;left:70px;color:#ffb839;font-size:25px}
+#labels{position:absolute;inset:0;pointer-events:none}
+.anchor{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-size:35px;text-shadow:0 3px 5px #000;background:#041323c9;border:1px solid #62dcef77;border-radius:12px;padding:8px 14px}
+.anchor img{width:108px;display:block;margin:auto auto 8px;filter:drop-shadow(0 5px 7px #0009)}
+.object{position:absolute;width:100px;transform-origin:center;filter:drop-shadow(0 5px 5px #0009)}
+#diagram{position:absolute;left:70px;right:150px;top:31%;height:530px;background:#061b2de8;border:2px solid #56cfdf88;border-radius:26px;padding:28px;box-shadow:0 20px 70px #0009}
+#diagram h2{margin:0;font-size:37px;color:#ffca64}#diagram svg{width:100%;height:370px}
+#watermark{position:absolute;object-fit:contain}
+</style>
+<div id="stage"><canvas id="map"></canvas><div id="shade"></div><div id="labels"></div>
+<div id="status"></div><div id="title"><div id="eyebrow"></div><div id="headline"></div><div id="rule"></div></div>
+<div id="diagram"><h2>ห้องประตูน้ำ • ภาพอธิบายกลไก</h2>
+<svg viewBox="0 0 760 350"><defs><pattern id="water-pattern" width="45" height="18" patternUnits="userSpaceOnUse"><path d="M0 9 Q11 0 22 9 T45 9" fill="none" stroke="#9ef4ff" opacity=".4" stroke-width="2"/></pattern></defs>
+<path d="M35 70 V310 H720 V70" fill="#122f43" stroke="#8ba7b5" stroke-width="12"/>
+<path id="water" fill="#0b9dc2"/><path id="ripple" fill="url(#water-pattern)"/>
+<rect x="140" y="50" width="16" height="260" fill="#f3ae3b"/><rect x="625" y="50" width="16" height="260" fill="#f3ae3b"/>
+<image id="lock-ship" href="/skill/assets/icons/ship.svg" x="255" width="260" height="130"/>
+<path id="flow" d="M75 260 H220" fill="none" stroke="#68e6fa" stroke-width="10" stroke-dasharray="20 13"/>
+<text x="55" y="340" fill="#cbeaf5" font-size="24" font-family="Kanit">น้ำไหลเข้า → ระดับน้ำสูงขึ้น → เรือที่ลอยอยู่สูงตาม</text></svg></div>
+<div id="subtitle"><span></span></div><div id="credits"></div><img id="watermark"></div>
+<script type="module" src="/skill/renderer/player.mjs"></script></html>

@@ -1,0 +1,13 @@
+{
+  "name": "sports-story-motion-renderer",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "1.58.2",
+    "three": "0.170.0"
+  },
+  "scripts": {
+    "render": "node render.mjs"
+  }
+}

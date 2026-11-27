@@ -1,0 +1,14 @@
+{
+  "name": "sports-story-motion",
+  "owner": {
+    "name": "hirok-th"
+  },
+  "plugins": [
+    {
+      "name": "sports-story-motion",
+      "source": "./",
+      "description": "สร้างสารคดีแผนที่และ Infographic ภาษาไทย พร้อม DEM terrain เส้นทาง เสียง Google AI Studio และซับ Kanit",
+      "version": "3.0.0"
+    }
+  ]
+}

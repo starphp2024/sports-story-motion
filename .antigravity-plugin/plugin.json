@@ -1,0 +1,12 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "sports-story-motion",
+  "version": "3.0.0",
+  "description": "สร้างสารคดีแผนที่และ Infographic ภาษาไทย พร้อม DEM terrain เส้นทาง เสียง Google AI Studio และซับ Kanit",
+  "homepage": "https://github.com/hirok-th/sports-story-motion",
+  "repository": "https://github.com/hirok-th/sports-story-motion",
+  "displayName": "Sports Story Motion",
+  "suggestedPrompts": [
+    "สร้างสารคดีแผนที่ภาษาไทย พร้อมตรวจ terrain เสียงจริงและซับ Kanit ก่อนส่งงาน"
+  ]
+}
