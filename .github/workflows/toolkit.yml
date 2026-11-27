@@ -69,7 +69,7 @@ jobs:
       - run: python scripts/validate_manifests.py
       - run: npm install --prefix /tmp/ssm-cli @anthropic-ai/claude-code@2.1.332 @openai/codex@0.172.0
       - run: /tmp/ssm-cli/node_modules/.bin/claude plugin validate . --json
-      - run: /tmp/ssm-cli/node_modules/.bin/claude plugin marketplace add .
+      - run: /tmp/ssm-cli/node_modules/.bin/claude plugin marketplace add "$PWD"
       - run: /tmp/ssm-cli/node_modules/.bin/claude plugin install sports-story-motion@sports-story-motion --scope project
       - run: /tmp/ssm-cli/node_modules/.bin/claude plugin list --json
       - run: /tmp/ssm-cli/node_modules/.bin/codex plugin marketplace add . --json

@@ -47,7 +47,7 @@
     /sports-story-motion:sports-story-motion ตรวจเครื่องมือก่อนสร้างสารคดีแผนที่ไทย
 
 คำสั่ง --plugin-dir เป็นการโหลด local สำหรับทดสอบ หากต้องการติดตั้งจาก marketplace ของโฟลเดอร์นี้:
-    claude plugin marketplace add .
+    claude plugin marketplace add (Get-Location).Path
     claude plugin install sports-story-motion@sports-story-motion
 
 เปิด session ใหม่และดูรายการ plugin/skill ที่ client แสดง

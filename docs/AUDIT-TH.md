@@ -47,3 +47,6 @@ branch: feat/thai-documentary-toolkit-v3
 - ยังไม่ใช่ผลทดสอบแชต/GUI ของทั้งสามแอป และยังไม่ได้ทดสอบการใช้งาน Antigravity native CLI
 - ไม่ได้ส่งเข้าระบบ public plugin directory; ผลตรวจ directory ของ Claude ระบุว่ายังขาด LICENSE ที่เจ้าของเลือกและ listing icon จึงไม่อ้างว่าพร้อมเผยแพร่ใน public directory และไม่ได้กำหนดสิทธิ์ใหม่ให้สื่อเดิม
 - เสียงจริง การตรวจคำอ่าน ซับที่ตรงเสียง และ MP4 final ยังรอการสร้าง/เข้าถึงเสียง Google AI Studio ตามจริง
+
+- ตรวจ layout ซับ Kanit ทั้ง 9:16 และ 16:9 แล้ว โหลดฟอนต์จริงและไม่หลุดกรอบ ภาพนี้เป็น layout test ไม่มีการอ้างว่าตรงเสียงจริง
+- native Claude Code พบว่าคำสั่ง marketplace add ที่ใช้เพียงจุดไม่รับเป็น source จึงแก้คู่มือให้ส่งพาธเต็มจาก Get-Location แทน และตรวจการติดตั้งบน CI แยก

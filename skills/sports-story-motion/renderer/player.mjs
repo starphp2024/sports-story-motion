@@ -8,9 +8,10 @@ const base = p.aspect === '16:9' ? [1920,1080] : [1080,1920];
 $('stage').style.width=base[0]+'px'; $('stage').style.height=base[1]+'px';
 $('stage').style.transform='scale('+window.innerWidth/base[0]+')';
 if(p.aspect==='16:9'){
-  $('title').style.fontSize='62px';$('title').style.top='90px';
-  $('subtitle').style.top='76%';$('credits').style.bottom='55px';
+  $('title').style.fontSize='62px';$('title').style.top='90px';$('status').style.top='25px';
+  $('subtitle').style.top='70%';$('credits').style.bottom='55px';
   $('diagram').style.cssText+=';left:560px;right:560px;top:24%;height:440px';
+  $('diagram').querySelector('svg').style.height='275px';
 }
 $('route-layer').setAttribute('viewBox','0 0 '+base[0]+' '+base[1]);
 const canvas=$('map');
