@@ -34,3 +34,16 @@ branch: feat/thai-documentary-toolkit-v3
 - ต้องฟังเสียงจริง ตรวจคำอ่าน จัดคิวซับ/ภาพ เรนเดอร์และดู MP4 final ก่อนส่งมอบครบ
 
 คงความสามารถเดิมและชื่อ skill ไม่รวมกับ GeoMotion Thai
+
+
+## ผลตรวจที่ทำแล้ว (ก่อนตรวจเสียง final)
+
+- local Windows: เตรียม NASA imagery, Terrarium DEM และ polygon ทะเลสาบจริง, WebGL2 ผ่าน, เรนเดอร์ MP4 26 วินาที 540×960/30fps และ decode/count frames ผ่าน
+- ตรวจ PNG มุมกว้าง ธงก่อนซูม และระยะใกล้ ปรับป้ายไม่ทับเรือและเส้นทางให้ชัด ภูมิประเทศเป็น DEM mesh สูงขยาย 4 เท่า
+- ชุดตรวจ 14 tests: CI Windows/Linux ผ่านครบ; local ผ่าน 13 และข้าม legacy RAQM 1 เพราะเครื่องนี้ไม่มี RAQM
+- quick_validate ของ skill-creator ผ่าน; schema ทางการของ portable Codex และ Antigravity ผ่าน
+- Claude Code 2.1.332 ตรวจพบ skill sports-story-motion:sports-story-motion และผ่านการตรวจโครงสร้าง
+- Codex CLI 0.172.0 บน CI ติดตั้ง marketplace/plugin ได้จริง แสดง version 3.0.0, installed:true, enabled:true
+- ยังไม่ใช่ผลทดสอบแชต/GUI ของทั้งสามแอป และยังไม่ได้ทดสอบการใช้งาน Antigravity native CLI
+- ไม่ได้ส่งเข้าระบบ public plugin directory; ผลตรวจ directory ของ Claude ระบุว่ายังขาด LICENSE ที่เจ้าของเลือกและ listing icon จึงไม่อ้างว่าพร้อมเผยแพร่ใน public directory และไม่ได้กำหนดสิทธิ์ใหม่ให้สื่อเดิม
+- เสียงจริง การตรวจคำอ่าน ซับที่ตรงเสียง และ MP4 final ยังรอการสร้าง/เข้าถึงเสียง Google AI Studio ตามจริง

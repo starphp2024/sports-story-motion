@@ -40,6 +40,8 @@ renderer จะเรียก Python ชื่อ python โดยค่าเ�
 
 ควรได้ MP4 540×960 มีข้อความ “ทดสอบภาพเคลื่อนไหว • ยังไม่มีเสียงพากย์”, ภาพ PNG และรายงาน QA
 คลิปนี้ยังไม่สมบูรณ์ SRT ว่างที่เกิดจาก captions ว่างไม่ใช่ซับที่ส่งมอบแทนเสียงจริง
+ตรวจภาพจังหวะเดียวอย่างรวดเร็ว: node renderer/render.mjs assets/panama/project.json output/frame.png --animation-only --preview --frame=13
+
 ตัด --preview ออกเพื่อทดสอบ 1080×1920 หรือเปลี่ยน aspect ใน project.json เป็น 16:9 เพื่อออก 1920×1080
 
 ## ทำคลิปมีเสียงและซับจริง

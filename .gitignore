@@ -10,3 +10,4 @@ dist/
 **/*.candidate.json
 tooling/
 film/
+**/pnpm-lock.yaml

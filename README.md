@@ -30,7 +30,7 @@ Python 3.10+, Pillow/RAQM สำหรับ renderer เดิม, Node.js 22+,
 AI Studio ต้องใช้บัญชีและ browser tool ที่เข้าถึงได้จริง; ไม่รวมเสียง/โควตา/สิทธิ์บัญชีใน plugin
 
 อ่านคู่มือก่อนติดตั้ง การมี manifest/ZIP ที่ถูกโครงสร้างไม่เท่ากับทดสอบติดตั้งทุกแอปแล้ว
-GitHub Actions ตรวจ unit/regression บน Windows/Linux และทดสอบ renderer บน Linux ส่วนการใช้งานจริงบนแอปทั้งสามและเสียงยังต้องตรวจตามรายงาน
+GitHub Actions ตรวจ unit/regression บน Windows/Linux และทดสอบ renderer บน Linux Codex CLI ติดตั้งและเปิดใช้ plugin บน CI สำเร็จแล้ว; Claude Code ผ่านการตรวจโครงสร้าง; Antigravity ผ่าน schema ส่วน GUI ของแอปทั้งสามและเสียงยังต้องตรวจตามรายงาน
 
 ## สร้าง ZIP
 

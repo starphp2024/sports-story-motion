@@ -8,5 +8,9 @@
   "displayName": "Sports Story Motion",
   "suggestedPrompts": [
     "สร้างสารคดีแผนที่ภาษาไทย พร้อมตรวจ terrain เสียงจริงและซับ Kanit ก่อนส่งงาน"
-  ]
+  ],
+  "author": {
+    "name": "hirok-th",
+    "url": "https://github.com/hirok-th"
+  }
 }

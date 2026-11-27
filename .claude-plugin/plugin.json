@@ -3,5 +3,9 @@
   "version": "3.0.0",
   "description": "สร้างสารคดีแผนที่และ Infographic ภาษาไทย พร้อม DEM terrain เส้นทาง เสียง Google AI Studio และซับ Kanit",
   "homepage": "https://github.com/hirok-th/sports-story-motion",
-  "repository": "https://github.com/hirok-th/sports-story-motion"
+  "repository": "https://github.com/hirok-th/sports-story-motion",
+  "author": {
+    "name": "hirok-th",
+    "url": "https://github.com/hirok-th"
+  }
 }

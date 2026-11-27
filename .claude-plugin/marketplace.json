@@ -10,5 +10,6 @@
       "description": "สร้างสารคดีแผนที่และ Infographic ภาษาไทย พร้อม DEM terrain เส้นทาง เสียง Google AI Studio และซับ Kanit",
       "version": "3.0.0"
     }
-  ]
+  ],
+  "description": "เครื่องมือสร้างสารคดีแผนที่และ Infographic ภาษาไทย"
 }

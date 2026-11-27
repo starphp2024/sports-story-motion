@@ -8,5 +8,9 @@
   "interface": {
     "displayName": "Sports Story Motion",
     "shortDescription": "สารคดีแผนที่ภาษาไทย"
+  },
+  "author": {
+    "name": "hirok-th",
+    "url": "https://github.com/hirok-th"
   }
 }

@@ -9,6 +9,7 @@ Keep project.json, geo.json, geo/ and media/ together. Paths inside the project 
 | duration / fps / aspect | Measured audio duration rounded up to a frame / 30 / 9:16 or 16:9 |
 | origin | WGS84 [longitude,latitude] local scene origin |
 | colors | ocean, highlight and route colors |
+| water_features | Optional Natural Earth lake ne_id, color, nominal surface_elevation_m and note; fetched polygon is kept in geo.json |
 | maps | id, WGS84 bounds [west,south,east,north], XYZ zoom; terrain:true and dem_zoom for height data |
 | terrain | mode:dem-mesh and vertical_exaggeration (1–20); record the real value |
 | countries | Natural Earth ADM0_A3 code, Thai name, WGS84 location, start, flag_at, zoom_at, end; optional project-relative flag file |

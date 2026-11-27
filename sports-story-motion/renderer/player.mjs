@@ -27,6 +27,7 @@ const origin=merc(...p.origin);
 function xy(lon,lat){const q=merc(lon,lat);return [q[0]-origin[0],q[1]-origin[1]];}
 const detailed=geo.maps.find(x=>x.elevation_m);
 function elevation(lon,lat){
+  const detailed=[...geo.maps].reverse().find(m=>m.elevation_m&&lon>=m.bounds[0]&&lon<=m.bounds[2]&&lat>=m.bounds[1]&&lat<=m.bounds[3]);
   if(!detailed)return 0;
   const [w,s,e,n]=detailed.bounds,[xl,yb]=merc(w,s),[xr,yt]=merc(e,n),[x,y]=merc(lon,lat);
   const u=(x-xl)/(xr-xl),v=(yt-y)/(yt-yb);
@@ -146,7 +147,9 @@ else $('watermark').style.display='none';
 $('headline').textContent=p.title_screen;$('eyebrow').textContent=p.eyebrow||'';
 $('credits').textContent=geo.credits.join('\n')+'\n'+p.route_note;
 $('status').textContent=p.render_status==='final'?'':'ทดสอบภาพเคลื่อนไหว • ยังไม่มีเสียงพากย์';
+await document.fonts.load('700 56px Kanit','เรือกำลังสูงขึ้น');
 await document.fonts.ready;
+if(!document.fonts.check('700 56px Kanit','เรือกำลังสูงขึ้น'))throw Error('Kanit font did not load');
 await Promise.all([...document.images].filter(i=>i.getAttribute('src')).map(i=>i.decode().catch(()=>{throw Error('image failed: '+i.src);})));
 window.setTime=async seconds=>{
   const t=seconds;cameraAt(t);
@@ -188,9 +191,9 @@ window.setTime=async seconds=>{
   renderer.render(scene,camera);
   const subtitle=$('subtitle').getBoundingClientRect();
   const textRects=[...$('subtitle').firstElementChild.getClientRects()];
-  window.frameReport={time:seconds,terrainMode:detailed?'dem-mesh':'flat',
+  window.frameReport={time:seconds,fontLoaded:document.fonts.check('700 56px Kanit','เรือกำลังสูงขึ้น'),terrainMode:detailed?'dem-mesh':'flat',
     renderer:renderer.getContext().getParameter(renderer.getContext().RENDERER),
-    subtitleFits:!cue||(subtitle.left>=0&&subtitle.right<=window.innerWidth&&subtitle.bottom<=window.innerHeight&&textRects.every(r=>r.left>=0&&r.right<=window.innerWidth&&r.bottom<=window.innerHeight)),
+    subtitleFits:!cue||(subtitle.left>=0&&subtitle.right<=window.innerWidth&&subtitle.bottom<=window.innerHeight&&subtitle.height*base[0]/window.innerWidth<=184&&textRects.every(r=>r.left>=0&&r.right<=window.innerWidth&&r.bottom<=window.innerHeight)),
     anchors:countryGroups.map(({country,label})=>({code:country.code,x:parseFloat(label.style.left),y:parseFloat(label.style.top)}))};
   return window.frameReport;
 };
